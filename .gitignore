@@ -1,3 +1,4 @@
 *.swp
 *.swo
 small_metrics.json
+*.tmp
