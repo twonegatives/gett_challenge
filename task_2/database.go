@@ -61,3 +61,9 @@ func (d *Database) insertRows(tableName string, input interface{}) {
 
   d.executeInsert(tableName, sqlValues)
 }
+
+func (d *Database) updateIdSeq(sequenceName string, field string, tableName string) {
+  query := fmt.Sprintf("SELECT setval('%s', (SELECT MAX(%s) FROM %s))", sequenceName, field, tableName)
+  _, err := d.connection.Query(query)
+  handleError(err)
+}

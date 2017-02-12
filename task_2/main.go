@@ -16,7 +16,10 @@ func handleError(err error) {
 func main() {
   db := &Database{}
   db.obtainConnection()
+  // NOTE: we'd better reset id sequence after this,
+  // as long as we insert ID values by hands
   db.insertRows("drivers", getDrivers())
+  db.updateIdSeq("driver_id_seq", "id", "drivers")
 
   var metrics []Metric
   const window int = 500
