@@ -31,30 +31,4 @@ func main() {
 
 	beego.Run()
 
-	//newDriver := models.Driver{Name: "Stephen", LicenseNumber: "10-131-254"}
-	//dr, erry := models.AddDriver(newDriver)
-	//handleError(erry)
-	//fmt.Println(dr)
-	//models.UpdateDriver(dr, models.Driver{Name: "Yuriy"})
-
-	//driver, erry2 := models.GetDriver(dr)
-	//handleError(erry2)
-	//fmt.Println(driver)
-
-	//models.DeleteDriver(dr)
-
-	//drivers, _ := models.GetAllDrivers(20, 0)
-	//fmt.Println(drivers)
-
 }
-
-//func getDbConnection() (*gorm.DB) {
-//  config    := beego.AppConfig
-//  dbHost    := config.String("dbHost")
-//  dbName    := config.String("dbName")
-//  dbUser    := config.String("dbUser")
-//  dbPass    := config.String("dbPass")
-//  conn, err := db.Connect(dbHost, dbName, dbUser, dbPass)
-//  handleError(err)
-//  return conn
-//}

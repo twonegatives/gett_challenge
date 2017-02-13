@@ -9,6 +9,12 @@ import (
 )
 
 type Metric struct {
+	//NOTE: we use pointers here and in Driver model because gorm forces
+	//us to have an object to store its query results in. As soon as we
+	//define this object, our strings get "" value, and ints get 0, so
+	//we can not refuse to save this data into database (as fields are actually not null...).
+	//two options to solve this are pointers and sql.NullString and sql.NullIntegers.
+
 	ID         int `gorm:"not null"`
 	MetricName *string
 	Value      *int
@@ -47,11 +53,12 @@ func UpdateMetric(driverId int, metricId int, updatedMetric Metric) error {
 }
 
 func DeleteMetric(driverId int, metricId int) error {
-	// NOTE: when delete a record, you need to ensure it's primary field has value,
-	// and GORM will use the primary key to delete the record, if primary field's blank,
-	// GORM will delete all records for the model
 	var metric Metric
 	var queryResult *gorm.DB
+
+	//NOTE: we double-check existance of metric with particular driverId here,
+	//because we dont want to accidentaly delete a metric which belongs to ANOTHER
+	//driver
 
 	queryResult = db.Conn.Where(&Metric{ID: metricId, DriverId: &driverId}).First(&metric)
 	if queryResult.Error == nil {

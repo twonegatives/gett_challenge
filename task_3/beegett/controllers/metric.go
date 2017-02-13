@@ -17,19 +17,19 @@ func (c *MetricController) Post() {
 	driverId, _ := strconv.Atoi(c.Ctx.Input.Param(":driverId"))
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &mr)
 
-	if err != nil {
-		c.Ctx.Output.SetStatus(400)
-		c.Data["json"] = generateJsonError(err)
-	} else {
+	if err == nil {
 		mr.DriverId = &driverId
 		metricId, err := models.AddMetric(mr)
-		if err != nil {
-			c.Ctx.Output.SetStatus(400)
-			c.Data["json"] = generateJsonError(err)
-		} else {
+		if err == nil {
 			c.Ctx.Output.SetStatus(201)
 			c.Data["json"] = map[string]int{"MetricId": metricId}
+		} else {
+			c.Ctx.Output.SetStatus(400)
+			c.Data["json"] = generateJsonError(err)
 		}
+	} else {
+		c.Ctx.Output.SetStatus(400)
+		c.Data["json"] = generateJsonError(err)
 	}
 	c.ServeJSON()
 }
@@ -39,11 +39,11 @@ func (c *MetricController) Get() {
 	metricId, _ := strconv.Atoi(c.Ctx.Input.Param(":metricId"))
 
 	ob, err := models.GetMetric(driverId, metricId)
-	if err != nil {
+	if err == nil {
+		c.Data["json"] = ob
+	} else {
 		c.Ctx.Output.SetStatus(400)
 		c.Data["json"] = generateJsonError(err)
-	} else {
-		c.Data["json"] = ob
 	}
 
 	c.ServeJSON()
@@ -68,19 +68,19 @@ func (c *MetricController) Put() {
 	var mr models.Metric
 	err := json.Unmarshal(c.Ctx.Input.RequestBody, &mr)
 
-	if err != nil {
-		c.Ctx.Output.SetStatus(400)
-		c.Data["json"] = generateJsonError(err)
-	} else {
+	if err == nil {
 		metricId, _ := strconv.Atoi(c.Ctx.Input.Param(":metricId"))
 		driverId, _ := strconv.Atoi(c.Ctx.Input.Param(":driverId"))
 		err = models.UpdateMetric(driverId, metricId, mr)
-		if err != nil {
+		if err == nil {
+			c.Data["json"] = map[string]string{"status": "update success!"}
+		} else {
 			c.Ctx.Output.SetStatus(400)
 			c.Data["json"] = generateJsonError(err)
-		} else {
-			c.Data["json"] = map[string]string{"status": "update success!"}
 		}
+	} else {
+		c.Ctx.Output.SetStatus(400)
+		c.Data["json"] = generateJsonError(err)
 	}
 
 	c.ServeJSON()
@@ -90,11 +90,11 @@ func (c *MetricController) Delete() {
 	metricId, _ := strconv.Atoi(c.Ctx.Input.Param(":metricId"))
 	driverId, _ := strconv.Atoi(c.Ctx.Input.Param(":driverId"))
 	err := models.DeleteMetric(driverId, metricId)
-	if err != nil {
+	if err == nil {
+		c.Data["json"] = map[string]string{"status": " delete success!"}
+	} else {
 		c.Ctx.Output.SetStatus(400)
 		c.Data["json"] = generateJsonError(err)
-	} else {
-		c.Data["json"] = map[string]string{"status": " delete success!"}
 	}
 	c.ServeJSON()
 }
