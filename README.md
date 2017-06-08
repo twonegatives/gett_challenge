@@ -6,17 +6,9 @@ Golang code challange was to perform a list of tasks:
 2. Import sample data into datastore using Golang;
 3. Build an API for accessing drivers and metrics using Beego framework.
 
-## Briefly
-It is hosted on `aws`, so you can give it a try like:
-```
-http://ec2-52-26-223-176.us-west-2.compute.amazonaws.com:8080/v1/driver
-```
-
-Watch `routes` file for inspiration on what else can be done there.
-
 ## Getting Started
 
-You should obviously have a database (dump is done from postgres) and Golang installed to run this application. 
+You should obviously have a database (dump is done from postgres) and Golang installed to run this application.
 First, create a new database, load dump from the former folder
 
 ```
@@ -48,5 +40,5 @@ API is covered with endpoint tests for both drivers and metrics.
 Tests should be launched from `beegett/tests` folder.
 
 ```
-go test -v 
+go test -v
 ```
